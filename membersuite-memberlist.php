@@ -23,6 +23,7 @@
   */
  require plugin_dir_path(__FILE__) . 'includes/class-membersuitememberlist.php';
  require plugin_dir_path(__FILE__) . 'includes/class-userconfig.php';
+ require plugin_dir_path(__FILE__) . 'includes/shortcodes.php';
  require plugin_dir_path(__FILE__) . 'vendor/autoload.php'; // geocoder from composer dependencies
 
  global $msml_db_version; // php is the worst
