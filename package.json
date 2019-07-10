@@ -4,8 +4,16 @@
   "main": "Gruntfile.js",
   "author": "Wayne Graham",
   "devDependencies": {
+    "autoprefixer": "^9.6.1",
     "grunt": "~1.0.4",
+    "grunt-contrib-cssmin": "^3.0.0",
+    "grunt-contrib-sass": "^1.0.0",
+    "grunt-contrib-uglify": "^4.0.1",
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-postcss": "^0.9.0",
+    "grunt-sass": "^3.0.2",
     "grunt-wp-i18n": "~1.0.3",
-    "grunt-wp-readme-to-markdown": "~2.0.1"
+    "grunt-wp-readme-to-markdown": "~2.0.1",
+    "node-sass": "^4.12.0"
   }
 }

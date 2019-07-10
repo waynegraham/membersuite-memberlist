@@ -41,12 +41,87 @@ module.exports = function(grunt) {
 				}
 			}
 		},
+
+		sass: { // Task
+			dist: { // Target
+				options: { // Target options
+					// style: 'expanded',
+					// sourcemap: 'none'
+				},
+				files: [{ // Dictionary of files
+					expand: true,
+					cwd: '_scss',
+					src: ['main.scss'],
+					dest: 'public/css/',
+					ext: '.css'
+				}]
+			}
+		},
+
+		postcss: { // Begin Post CSS Plugin
+			options: {
+				map: false,
+				processors: [
+					require('autoprefixer')({
+						// browsers: ['last 2 versions'],
+						browserlist: [
+							"last 2 versions",
+							"> 1%",
+							"maintained node versions",
+							"not dead"
+						]
+					})
+				]
+			},
+			dist: {
+				src: 'public/css/main.css'
+			}
+		},
+
+		cssmin: { // Begin CSS Minify Plugin
+			target: {
+				files: [{
+					expand: true,
+					cwd: 'public/css',
+					src: ['*.css', '!*.min.css'],
+					dest: 'public/css',
+					ext: '.min.css'
+				}]
+			}
+		},
+
+		uglify: { // Begin JS Uglify Plugin
+			build: {
+				src: ['src/*.js'],
+				dest: 'public/js/script.min.js'
+			}
+		},
+
+		watch: { // Compile everything into one task with Watch Plugin
+			css: {
+				files: '**/*.scss',
+				tasks: ['sass', 'postcss', 'cssmin']
+			},
+			js: {
+				files: '**/*.js',
+				tasks: ['uglify']
+			}
+		}
 	});
 
 	grunt.loadNpmTasks('grunt-wp-i18n');
 	grunt.loadNpmTasks('grunt-wp-readme-to-markdown');
+	grunt.loadNpmTasks('grunt-contrib-sass');
+	grunt.loadNpmTasks('grunt-postcss');
+	grunt.loadNpmTasks('grunt-contrib-cssmin');
+	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-contrib-watch');
+
 	grunt.registerTask('i18n', ['addtextdomain', 'makepot']);
 	grunt.registerTask('readme', ['wp_readme_to_markdown']);
+	grunt.registerTask('scss', ['sass']);
+
+	grunt.registerTask('default', ['watch']);
 
 	grunt.util.linefeed = '\n';
 
