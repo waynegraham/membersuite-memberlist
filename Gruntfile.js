@@ -93,7 +93,7 @@ module.exports = function(grunt) {
 		uglify: { // Begin JS Uglify Plugin
 			build: {
 				src: ['src/*.js'],
-				dest: 'public/js/script.min.js'
+				dest: 'public/js/main.min.js'
 			}
 		},
 
