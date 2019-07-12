@@ -14,7 +14,7 @@ class MembersuiteMemberlist_Admin
 {
     private $plugin_name;
     private $membersuite_memberlist_options;
-    public static $version;
+    public $version;
 
     public function __construct($plugin_name, $version)
     {
@@ -41,24 +41,6 @@ class MembersuiteMemberlist_Admin
             'membersuite-memberlist-settings',
             array($this, 'msml_options_page')
         );
-
-
-        // add_menu_page(
-        //   'Membersuite Membership List',
-        //   'Membersuite Membership List',
-        //   'manage_options',
-        //   'membersuite-memberlist',
-        //   array($this, 'msml_options_page'),
-        //   'dashicons-admin-users'
-        // );
-        //
-        // add_options_page(
-        //   'Membersuite Memberlist ',
-        //   'Membersuite Memberlist',
-        //   'manage_options',
-        //   'membersuite-memberlist',
-        //   array($this, 'msml_options_page')
-        // );
     }
 
     public function get_members()
@@ -146,6 +128,13 @@ class MembersuiteMemberlist_Admin
           'membersuite-memberlist-admin' // page
         );
 
+        add_settings_section(
+            'membersuite_mapbox_setting_section', // id
+          'Mapbox Settings', // title
+          array( $this, 'membersuite_mapbox_section_info' ), // callback
+          'membersuite-memberlist-admin' // page
+        );
+
         add_settings_field(
             'accesskeyid_0', // id
           'Access Key ID', // title
@@ -203,11 +192,24 @@ class MembersuiteMemberlist_Admin
             'membersuite-memberlist-admin',
             'membersuite_geocoding_setting_section'
         );
+
+        add_settings_field(
+            'mapbox_api_key',
+            'Mapbox API Key',
+            array( $this, 'mapbox_api_callback'),
+            'membersuite-memberlist-admin',
+            'membersuite_mapbox_setting_section'
+        );
     }
 
     public function membersuite_memberlist_section_info()
     {
         printf('%s', 'These settings are your API key that you need to generate in MemberSuite.');
+    }
+
+    public function membersuite_mapbox_section_info()
+    {
+        printf('%s', 'Get your API key at <a href="https://www.mapbox.com/">Mapbox</a>.');
     }
 
     public function membersuite_gecoding_section_info()
@@ -220,6 +222,14 @@ class MembersuiteMemberlist_Admin
         printf(
             '<input class="regular-text" type="text" name="membersuite_memberlist_option_name[bing_api_key]" id="bing_api_key" value="%s">',
             isset($this->$membersuite_memberlist_options['bing_api_key']) ? esc_attr($this->$membersuite_memberlist_options['bing_api_key']) : ''
+        );
+    }
+
+    public function mapbox_api_callback()
+    {
+        printf(
+            '<input class="regular-text" type="text" name="membersuite_memberlist_option_name[mapbox_api_key]" id="mapbox_api_key" value="%s">',
+            isset($this->$membersuite_memberlist_options['mapbox_api_key']) ? esc_attr($this->$membersuite_memberlist_options['mapbox_api_key']) : ''
         );
     }
 
@@ -301,6 +311,10 @@ class MembersuiteMemberlist_Admin
 
         if (isset($input['bing_api_key'])) {
             $sanitary_values['bing_api_key'] = sanitize_text_field($input['bing_api_key']);
+        }
+
+        if (isset($input['mapbox_api_key'])) {
+            $sanitary_values['mapbox_api_key'] = sanitize_text_field($input['mapbox_api_key']);
         }
 
         return $sanitary_values;

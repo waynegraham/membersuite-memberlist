@@ -26,8 +26,10 @@
  require plugin_dir_path(__FILE__) . 'includes/shortcodes.php';
  require plugin_dir_path(__FILE__) . 'vendor/autoload.php'; // geocoder from composer dependencies
 
- global $msml_db_version; // php is the worst
- $msml_db_version = '0.1.0';
+ function plugin_version()
+ {
+     return '0.1.0';
+ }
 
  use Geocoder\Query\GeocodeQuery;
 
@@ -43,6 +45,7 @@ function run_membersuite_membershiplist()
 
 run_membersuite_membershiplist();
 
+// TODO: move to MembersuiteMemberlist_Admin
 function geocode_membersuite_list()
 {
     echo "<h1>Geocoding</h1>";
@@ -93,10 +96,10 @@ function geocode_membersuite_list()
 
         $format = array('%s');
         $wpdb->update($table, $data, array('ID' => $member['id']));
-        // break;
     }
 }
 
+// TODO: move to MembersuiteMemberlist_Admin
 function import_membersuite_list()
 {
     // session_start();
@@ -166,7 +169,7 @@ add_action('admin_post_geocode_membersuite_list', 'geocode_membersuite_list');
 function membersuite_memberlist_install()
 {
     global $wpdb;
-    global $msml_db_version;
+    $msml_db_version = plugin_version();
     $table_name = $wpdb->prefix . "membersuite-memberlist";
     $charset_collate = $wpdb->get_charset_collate();
 
@@ -187,10 +190,15 @@ function membersuite_memberlist_install()
     add_option('membersuite-memberlist_db_version', $msml_db_version);
 }
 
+function membersuite_memberlist_upgrade()
+{
+    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+}
+
 function membersuite_memberlist_db_check()
 {
-    if (get_site_option('membersuite-memberlist_db_version') != $msml_db_version) {
-        membersuite_memberlist_install();
+    if (get_site_option('membersuite-memberlist_db_version') !== plugin_version()) {
+        membersuite_memberlist_upgrade();
     }
 }
 
@@ -209,6 +217,7 @@ function enqueue_styles()
 {
     wp_enqueue_script('membersuite-memberlist');
     wp_enqueue_script('leaflet');
+    
     wp_enqueue_style('membersuite-memberlist');
     wp_enqueue_style('leaflet');
 }
