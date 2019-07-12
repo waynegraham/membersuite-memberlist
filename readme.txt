@@ -12,6 +12,8 @@ List of members/sponsors managed in MemberSuite.
 
 == Description ==
 
+[![Build Status](https://travis-ci.org/waynegraham/membersuite-memberlist.svg?branch=master)](https://travis-ci.org/waynegraham/membersuite-memberlist)
+
 Allows you to import and keep a membership/sponsorship list from your managed MemberSuite instance.
 
 == Installation ==
