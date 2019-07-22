@@ -52,39 +52,78 @@ class MembersuiteMemberlist_Admin
     public function msml_import_page()
     {
         ?>
-        <h1>Membersuite Members</h1>
-        <form method="post" action="<?php echo admin_url('admin-post.php'); ?>" name="import">
-          <input type="hidden" name="action" value="import_membersuite_list">
-          <input id="import-button" type="submit" value="Import from Membersuite" class="button" />
-        </form>
+        <div class="container">
+          <div class="row">
+            <h1>Membersuite Members</h1>
+            <div class="col-12">
+              <div class="btn-group btn-group-toggle" data-toggle="buttons" role="group" aria-label="Admin buttons">
+                <form method="post" action="<?php echo admin_url('admin-post.php'); ?>" name="import">
+                  <input type="hidden" name="action" value="import_membersuite_list">
+                  <input class="btn btn-primary" id="import-button" type="submit" value="Import from Membersuite" class="button" />
+                </form>
 
-        <form method="post" action="<?php echo admin_url('admin-post.php'); ?>" name="geocode">
-          <input type="hidden" name="action" value="geocode_membersuite_list">
-          <input id="import-button" type="submit" value="Geocode" class="button" />
-        </form>
+                <form method="post" action="<?php echo admin_url('admin-post.php'); ?>" name="geocode">
+                  <input type="hidden" name="action" value="geocode_membersuite_list">
+                  <input class="btn btn-primary" id="import-button" type="submit" value="Geocode" class="button" />
+                </form>
 
-        <table>
-          <thead>
-            <tr>
-              <th>Institution</th>
-              <th>Membership Type</th>
-              <th>Location</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php
-              $members = MembersuiteMemberlist_Admin::get_members();
+                <button type="button" class="btn btn-warning ms-reset-data" name="button">Reset Data</button>
+              </div>
+
+              <div id="alerts"></div>
+
+
+                      <!-- <div id="loading" class="d-flex justify-content-center" >
+                        <div class="spinner-grow" role="status">
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                      </div> -->
+
+            </div>
+                      </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+              <div class="col-12">
+
+
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">Institution</th>
+                    <th scope="col">Membership Type</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  <?php
+                    $members = MembersuiteMemberlist_Admin::get_members();
         foreach ($members as $member) {
-            echo "<tr>
-                  <td>{$member['name']}</td>
-                  <td>{$member['membership_type']}</td>
+            // $nonce = 'delete_' . $member['id'] . '_' . wp_create_nonce('delete' . $member['id']);
+            $nonce = $member['id']  ?>
+                <tr>
+                        <td><?php echo $member['name'] ?></td>
+                        <td><?php echo $member['membership_type'] ?></td>
+                        <td>(<?php echo $member['longitude']?>, <?php echo $member['latitude']?>)</td>
+                        <td><button type="button" class="btn btn-danger membersuite_delete_row" id="<?php echo $nonce; ?>">Delete</button></td>
+                        <!-- <td><form action="<?php admin_url('admin-post.php'); ?>" method="post">
+                          <input type="hidden" name="action" value="delete_row" />
+                          <input type="submit" class="btn btn-danger" value="Delete" />
+                          </form> -->
+                        </td>
+                      </tr>
 
-                  <td>({$member['longitude']}, {$member['latitude']})</td>
-                </tr>";
+                    <?php
         } ?>
-          </tbody>
-        </table>
 
+                </tbody>
+              </table>
+            </div>
+              </div>
+        </div>
 
         <?php
     }

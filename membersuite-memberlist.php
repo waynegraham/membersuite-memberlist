@@ -202,6 +202,37 @@ function membersuite_memberlist_db_check()
     }
 }
 
+function ms_reset_members()
+{
+    check_ajax_referer('ms_reset_nonce');
+}
+
+// move to admin object
+function delete_row($data)
+{
+    check_ajax_referer('membersuite-nonce');
+    global $wpdb;
+    // echo $_POST['record_id'];
+    $id = intval($_POST['record_id']);
+    $table_name = $wpdb->prefix . "membersuite-memberlist";
+    $result = $wpdb->delete($table_name, array('id' => $id), array('%d'));
+    $response = json_encode($result);
+    ob_clean();
+    echo 'success';
+    wp_die();
+    // $status = "Nonce not verified";
+    // if (wp_verify_nonce($id[2], $id[0] . '_' . $id[1])) {
+    //     $table_name = $wpdb->prefix . "membersuite-memberlist";
+    //     $wpdb->delete($table_name, array('id' => $id), array('%d'));
+    //     $status = 'Deleted record.';
+    // }
+    //
+    // return $status;
+}
+add_action('wp_ajax_membersuite_delete_row', 'delete_row');
+add_action('wp_ajax_nopriv_your_delete_action', 'delete_row');
+// add_action('admin_post_delete_row', 'delete_row');
+
 add_action('plugins_loaded', 'membersuite_memberlist_db_check');
 
 function register_scripts()
@@ -213,14 +244,61 @@ function register_scripts()
     wp_register_style('leaflet', 'https://unpkg.com/leaflet@1.5.1/dist/leaflet.css');
 }
 
+function load_custom_wp_admin_style()
+{
+    global $main_menu_url;
+
+    $nonce = wp_create_nonce('ms_reset_nonce');
+
+    wp_register_style('membersuite-memberlist-admin', plugins_url('public/css/admin.min.css', __FILE__));
+    wp_register_style('bootstrap', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css');
+
+    wp_enqueue_style('membersuite-memberlist-admin');
+    wp_enqueue_style('bootstrap');
+
+    wp_register_script(
+        'membersuite-memberlist-admin',
+        plugins_url('public/js/admin.min.js', __FILE__),
+        array(
+        'jquery'
+      ),
+        time()
+    );
+    wp_register_script(
+        'popper',
+        'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js',
+        array('jquery')
+    );
+    wp_register_script(
+        'bootstrap',
+        'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js',
+        array('jquery', 'popper')
+    );
+
+    wp_enqueue_script('membersuite-memberlist-admin');
+    wp_enqueue_script('popper');
+    wp_enqueue_script('bootstrap');
+
+    wp_localize_script(
+        'membersuite-memberlist-admin',
+        'membersuite_ajax',
+        array(
+        'ajax_url' => admin_url('admin-ajax.php'),
+        'nonce' => wp_create_nonce('membersuite-nonce')
+      )
+    );
+}
+
 function enqueue_styles()
 {
     wp_enqueue_script('membersuite-memberlist');
     wp_enqueue_script('leaflet');
-    
+
     wp_enqueue_style('membersuite-memberlist');
     wp_enqueue_style('leaflet');
 }
 
 add_action('init', 'register_scripts');
 add_action('wp_enqueue_scripts', 'enqueue_styles');
+
+add_action('admin_enqueue_scripts', 'load_custom_wp_admin_style');

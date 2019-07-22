@@ -51,7 +51,7 @@ module.exports = function(grunt) {
 				files: [{ // Dictionary of files
 					expand: true,
 					cwd: '_scss',
-					src: ['main.scss'],
+					src: ['*.scss'],
 					dest: 'public/css/',
 					ext: '.css'
 				}]
@@ -92,9 +92,18 @@ module.exports = function(grunt) {
 
 		uglify: { // Begin JS Uglify Plugin
 			build: {
-				src: ['src/*.js'],
-				dest: 'public/js/main.min.js'
+				files: [{
+					expand: true,
+					cwd: 'src/',
+					src: ['*.js', '!*.min.js'],
+					dest: 'public/js/',
+					ext: '.min.js'
+				}]
 			}
+			// build: {
+			// 	src: ['src/*.js'],
+			// 	dest: 'public/js/'
+			// }
 		},
 
 		watch: { // Compile everything into one task with Watch Plugin
@@ -103,7 +112,7 @@ module.exports = function(grunt) {
 				tasks: ['sass', 'postcss', 'cssmin']
 			},
 			js: {
-				files: '**/*.js',
+				files: 'src/**/*.js',
 				tasks: ['uglify']
 			}
 		}

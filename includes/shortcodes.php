@@ -44,8 +44,9 @@ function membersuite_map($atts)
     $atts = array_change_key_case((array)$atts, CASE_LOWER);
     $a = shortcode_atts(
         array(
-      'membership_type' => $atts['membership_type'],
-      'height' => '360px',
+      'membership_type' => null,
+      'height' => '416px',
+      'width' => '616px',
       'id' => 'membersuite-list'
     ),
         $atts
@@ -70,13 +71,13 @@ function membersuite_map($atts)
 
       // see https://stackoverflow.com/questions/37166172/mapbox-tiles-and-leafletjs
       var grayscale   = L.tileLayer(mbUrl, {id: 'mapbox.light', attribution: mbAttr}),
-  		streets  = L.tileLayer(mbUrl, {id: 'mapbox.streets',   attribution: mbAttr}),
-      wheatpaste = L.tileLayer(mbUrl, {id: 'mapbox.wheatpaste',   attribution: mbAttr}),
-      comic  = L.tileLayer(mbUrl, {id: 'mapbox.comic',   attribution: mbAttr}),
-      pirates  = L.tileLayer(mbUrl, {id: 'mapbox.pirates',   attribution: mbAttr}),
-      emerald  = L.tileLayer(mbUrl, {id: 'mapbox.emerald',   attribution: mbAttr}),
-      emerald  = L.tileLayer(mbUrl, {id: 'mapbox.emerald',   attribution: mbAttr}),
-      pencil  = L.tileLayer(mbUrl, {id: 'mapbox.pencil',   attribution: mbAttr});
+  		streets  = L.tileLayer(mbUrl, {id: 'mapbox.streets', attribution: mbAttr}),
+      wheatpaste = L.tileLayer(mbUrl, {id: 'mapbox.wheatpaste', attribution: mbAttr}),
+      comic  = L.tileLayer(mbUrl, {id: 'mapbox.comic', attribution: mbAttr}),
+      pirates  = L.tileLayer(mbUrl, {id: 'mapbox.pirates', attribution: mbAttr}),
+      emerald  = L.tileLayer(mbUrl, {id: 'mapbox.emerald', attribution: mbAttr}),
+      emerald  = L.tileLayer(mbUrl, {id: 'mapbox.emerald', attribution: mbAttr}),
+      pencil  = L.tileLayer(mbUrl, {id: 'mapbox.pencil', attribution: mbAttr});
 
         var membershipMap = L.map('membersuite-membermap',{
           center: [38.89511, -77.03637],
@@ -98,7 +99,8 @@ function membersuite_map($atts)
   ";
 
     foreach ($members as $member) {
-        $output .= "\nL.marker([{$member['latitude']}, {$member['longitude']}]).addTo(members).bindPopup('<h3>{$member['name']}</h3>');";
+        // $output .= "\nL.marker([{$member['latitude']}, {$member['longitude']}]).addTo(members).bindPopup('<h3>{$member['name']}</h3>');";
+        $output .= "\nL.marker([{$member['latitude']}, {$member['longitude']}]).addTo(members);";
     }
 
     $output .= '
