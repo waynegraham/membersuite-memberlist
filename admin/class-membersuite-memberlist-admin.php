@@ -56,7 +56,6 @@ class MembersuiteMemberlist_Admin
           <div class="row">
             <h1>Membersuite Members</h1>
             <div class="col-12">
-              <div class="btn-group btn-group-toggle" data-toggle="buttons" role="group" aria-label="Admin buttons">
                 <form method="post" action="<?php echo admin_url('admin-post.php'); ?>" name="import">
                   <input type="hidden" name="action" value="import_membersuite_list">
                   <input class="btn btn-primary" id="import-button" type="submit" value="Import from Membersuite" class="button" />
@@ -68,7 +67,6 @@ class MembersuiteMemberlist_Admin
                 </form>
 
                 <button type="button" class="btn btn-warning ms-reset-data" name="button">Reset Data</button>
-              </div>
 
               <div id="alerts"></div>
 
@@ -214,7 +212,13 @@ class MembersuiteMemberlist_Admin
             'membersuite_memberlist_setting_section' // section
         );
 
-
+        add_settings_field(
+            'membersuite_query_5', // id
+            'Membersuite Query', // title
+            array( $this, 'membersuite_query_callback' ), // callback
+            'membersuite-memberlist-admin', // page
+            'membersuite_memberlist_setting_section' // section
+        );
 
         add_settings_field(
             'google_api_key',
@@ -320,6 +324,14 @@ class MembersuiteMemberlist_Admin
         );
     }
 
+    public function membersuite_query_callback()
+    {
+        printf(
+            '<textarea class="large-text" rows="5" name="membersuite_memberlist_option_name[membersuite_query_5]" id="membersuite_query_5">%s</textarea>',
+            isset($this->$membersuite_memberlist_options['membersuite_query_5']) ? $this->$membersuite_memberlist_options['membersuite_query_5'] : ''
+        );
+    }
+
     public function membersuite_memberlist_sanitize($input)
     {
         $sanitary_values = array();
@@ -342,6 +354,10 @@ class MembersuiteMemberlist_Admin
 
         if (isset($input['singingcertificatexml_4'])) {
             $sanitary_values['singingcertificatexml_4'] = esc_textarea($input['singingcertificatexml_4']);
+        }
+
+        if (isset($input['membersuite_query_5'])) {
+            $sanitary_values['membersuite_query_5'] = esc_textarea($input['membersuite_query_5']);
         }
 
         if (isset($input['google_api_key'])) {
