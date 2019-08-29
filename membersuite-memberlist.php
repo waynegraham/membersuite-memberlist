@@ -46,6 +46,31 @@ function run_membersuite_membershiplist()
 run_membersuite_membershiplist();
 
 // TODO: move to MembersuiteMemberlist_Admin
+
+function reset_membersuite_list()
+{
+    echo 'Deleting Data';
+    global $wpdb;
+
+    $query = $wpdb->get_results("DELETE FROM `{$wpdb->prefix}membersuite-memberlist`");
+    var_dump($query);
+}
+
+function delete_from_membersuite_list()
+{
+    echo "Deleting row {$_POST['member_id']}";
+
+    if (!empty($_POST['member_id'])) {
+        global $wpdb;
+
+        $table = $wpdb->prefix . 'membersuite-memberlist';
+        $id = $_POST['member_id'];
+        $result = $wpdb->delete($table, array('id' => $id));
+
+        var_dump($result);
+    }
+}
+
 function geocode_membersuite_list()
 {
     echo "<h1>Geocoding</h1>";
@@ -105,7 +130,9 @@ function import_membersuite_list()
     // session_start();
     // ob_start();
     // TODO: pull Query in to a setting with directions on how to create it
-    $Query = "SELECT Membership_b909aef5_0068_c9b1_bc68_0b3ba3931465.Type.Name AS membership_type, Name, _Preferred_Address FROM Organization WHERE (Membership_b909aef5_0068_c9b1_bc68_0b3ba3931465.ReceivesMemberBenefits=1) ORDER BY SortName, Name";
+    // $Query = "SELECT Membership_b909aef5_0068_c9b1_bc68_0b3ba3931465.Type.Name AS membership_type, Name, _Preferred_Address FROM Organization WHERE (Membership_b909aef5_0068_c9b1_bc68_0b3ba3931465.ReceivesMemberBenefits=1) ORDER BY SortName, Name";
+    $membersuite_memberlist_options = get_option('membersuite_memberlist_option_name');
+    $Query = $membersuite_memberlist_options['membersuite_query_5'];
 
     echo "<p>Connecting to Membersuite...</p>";
 
@@ -121,6 +148,7 @@ function import_membersuite_list()
     // }
     //
     $response = $api->WhoAmI();
+    echo "<p>Testing server response...</p>";
 
     if ($response->aSuccess=='false') {
         echo '<p>There was an issue connecting to MemberSuite</p>';
@@ -165,6 +193,8 @@ function import_membersuite_list()
 
 add_action('admin_post_import_membersuite_list', 'import_membersuite_list');
 add_action('admin_post_geocode_membersuite_list', 'geocode_membersuite_list');
+add_action('admin_post_reset_membersuite_list', 'reset_membersuite_list');
+add_action('admin_post_delete_from_membersuite_list', 'delete_from_membersuite_list');
 
 function membersuite_memberlist_install()
 {
@@ -202,7 +232,7 @@ function membersuite_memberlist_db_check()
     }
 }
 
-function ms_reset_members()
+function ms_reset()
 {
     check_ajax_referer('ms_reset_nonce');
 }
@@ -229,9 +259,13 @@ function delete_row($data)
     //
     // return $status;
 }
-add_action('wp_ajax_membersuite_delete_row', 'delete_row');
-add_action('wp_ajax_nopriv_your_delete_action', 'delete_row');
-// add_action('admin_post_delete_row', 'delete_row');
+add_action('wp_ajax_post_membersuite_delete_row', 'delete_row');
+add_action('wp_ajax_post_membersuite_reset', 'ms_reset');
+// add_action('wp_ajax_nopriv_your_delete_action', 'delete_row');
+// add_action('wp_ajax_delete_row', 'delete_row');
+
+add_action('wp_ajax_jsforwp_add_like', 'ms_reset');
+
 
 add_action('plugins_loaded', 'membersuite_memberlist_db_check');
 
