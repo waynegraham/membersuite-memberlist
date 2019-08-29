@@ -108,9 +108,9 @@ function membersuite_map( $atts ) {
 	return $output;
 }
 
-function register_shortcodes() {
+function membersuite_register_shortcodes() {
 	add_shortcode( 'membersuite_list', 'membersuite_list' );
 	add_shortcode( 'membersuite_map', 'membersuite_map' );
 }
 
-add_action( 'init', 'register_shortcodes' );
+add_action( 'init', 'membersuite_register_shortcodes' );
