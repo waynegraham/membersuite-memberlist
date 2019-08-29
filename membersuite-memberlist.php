@@ -228,7 +228,7 @@ function ms_reset() {
 }
 
 // move to admin object
-function delete_row( $data ) {
+function membersuite_delete_row( $data ) {
 	check_ajax_referer( 'membersuite-nonce' );
 	global $wpdb;
 	// echo $_POST['record_id'];
