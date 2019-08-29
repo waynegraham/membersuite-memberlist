@@ -1,68 +1,66 @@
 <?php
 
-function membersuite_list($atts)
-{
-    // normalize attribute keys, lowercase
-    $atts = array_change_key_case((array)$atts, CASE_LOWER);
-    $a = shortcode_atts(
-        array(
-        'membership_type' => '*',
-        'columns' => 3,
-        'id' => 'membersuite-list'
-      ),
-        $atts
-    );
-    global $wpdb;
+function membersuite_list( $atts ) {
+	// normalize attribute keys, lowercase
+	$atts = array_change_key_case( (array) $atts, CASE_LOWER );
+	$a    = shortcode_atts(
+		array(
+			'membership_type' => '*',
+			'columns'         => 3,
+			'id'              => 'membersuite-list',
+		),
+		$atts
+	);
+	global $wpdb;
 
-    // TODO: move to JS, passing the query array
+	// TODO: move to JS, passing the query array
 
-    $numOfCols = $a['columns'];
-    $bootstrapColWidth = 12 / $numOfCols;
-    $bootstrapClass = "col-md-{$bootstrapColWidth}";
+	$numOfCols         = $a['columns'];
+	$bootstrapColWidth = 12 / $numOfCols;
+	$bootstrapClass    = "col-md-{$bootstrapColWidth}";
 
-    $query = $wpdb->prepare("SELECT name FROM `{$wpdb->prefix}membersuite-memberlist` WHERE membership_type LIKE '%s' ORDER BY name", "%{$a['membership_type']}%");
-    $members = $wpdb->get_results($query, ARRAY_A);
-    $count = sizeof($members);
-    $output = '<div class="container">';
-    $output .= '<div class="row">';
+	$query   = $wpdb->prepare( "SELECT name FROM `{$wpdb->prefix}membersuite-memberlist` WHERE membership_type LIKE '%s' ORDER BY name", "%{$a['membership_type']}%" );
+	$members = $wpdb->get_results( $query, ARRAY_A );
+	$count   = sizeof( $members );
+	$output  = '<div class="container">';
+	$output .= '<div class="row">';
 
-    // $output .= "<h2>count: {$count}</h2><br />";
+	// $output .= "<h2>count: {$count}</h2><br />";
 
-    foreach ($members as $member) {
-        $output .= "<div class=\"{$bootstrapClass}\">{$member['name']}</div>";
-    }
+	foreach ( $members as $member ) {
+		$output .= "<div class=\"{$bootstrapClass}\">{$member['name']}</div>";
+	}
 
-    $output .= '</div>';
-    $output .= '</div>';
+	$output .= '</div>';
+	$output .= '</div>';
 
-    return $output;
+	return $output;
 }
 
-function membersuite_map($atts)
-{
-    // normalize attribute keys, lowercase
-    $atts = array_change_key_case((array)$atts, CASE_LOWER);
-    $a = shortcode_atts(
-        array(
-      'membership_type' => null,
-      'height' => '416px',
-      'width' => '616px',
-      'id' => 'membersuite-list'
-    ),
-        $atts
-  );
-    global $wpdb;
+function membersuite_map( $atts ) {
+	// normalize attribute keys, lowercase
+	$atts = array_change_key_case( (array) $atts, CASE_LOWER );
+	$a    = shortcode_atts(
+		array(
+			'membership_type' => null,
+			'height'          => '416px',
+			'width'           => '616px',
+			'id'              => 'membersuite-list',
+		),
+		$atts
+	);
+	global $wpdb;
 
-    $options = get_option('membersuite_memberlist_option_name', array());
-    $mapbox_key = $options['mapbox_api_key'];
+	$options    = get_option( 'membersuite_memberlist_option_name', array() );
+	$mapbox_key = $options['mapbox_api_key'];
 
-    $query = $wpdb->prepare("SELECT name, latitude, longitude FROM `{$wpdb->prefix}membersuite-memberlist` WHERE membership_type LIKE '%s' ORDER BY name", "%{$a['membership_type']}%");
-    $members = $wpdb->get_results($query, ARRAY_A);
-    $output = "<style>#membersuite-membermap{ height: {$a['height']};}</style>";
-    $output .= '<div id="membersuite-membermap"></div>';
+	$query   = $wpdb->prepare( "SELECT name, latitude, longitude FROM `{$wpdb->prefix}membersuite-memberlist` WHERE membership_type LIKE '%s' ORDER BY name", "%{$a['membership_type']}%" );
+	$members = $wpdb->get_results( $query, ARRAY_A );
+	$output  = "<style>#membersuite-membermap{ height: {$a['height']};}</style>";
+	$output .= '<div id="membersuite-membermap"></div>';
 
-    $output .= '<script>';
-    $output .= "
+	$output .= '<script>';
+	$output .= "
       var markerArray = [];
       var members = L.featureGroup();
 
@@ -98,22 +96,21 @@ function membersuite_map($atts)
         L.control.layers(baseLayers, overlays).addTo(membershipMap);
   ";
 
-    foreach ($members as $member) {
-        // $output .= "\nL.marker([{$member['latitude']}, {$member['longitude']}]).addTo(members).bindPopup('<h3>{$member['name']}</h3>');";
-        $output .= "\nL.marker([{$member['latitude']}, {$member['longitude']}]).addTo(members);";
-    }
+	foreach ( $members as $member ) {
+		// $output .= "\nL.marker([{$member['latitude']}, {$member['longitude']}]).addTo(members).bindPopup('<h3>{$member['name']}</h3>');";
+		$output .= "\nL.marker([{$member['latitude']}, {$member['longitude']}]).addTo(members);";
+	}
 
-    $output .= '
+	$output .= '
     membershipMap.fitBounds(members.getBounds());
     </script>';
 
-    return $output;
+	return $output;
 }
 
-function register_shortcodes()
-{
-    add_shortcode('membersuite_list', 'membersuite_list');
-    add_shortcode('membersuite_map', 'membersuite_map');
+function register_shortcodes() {
+	add_shortcode( 'membersuite_list', 'membersuite_list' );
+	add_shortcode( 'membersuite_map', 'membersuite_map' );
 }
 
-add_action('init', 'register_shortcodes');
+add_action( 'init', 'register_shortcodes' );

@@ -3,24 +3,21 @@
  Command short cut
 */
 
-class CommandShortcut
-{
-   
-   var $ID;
-   var $Icon;
-   var $HelpText;
-   var $Label;
-   var $State;
-   var $Name;
-   var $Context;
-   var $Arg1;
-   var $Arg2;
-   var $Arg3;
-   var $Arg4;
-   var $ConfirmWith;
-   var $AppliesIf;
-   var $CommandSessionID;
-   var $Target;
-}
+class CommandShortcut {
 
-?>
+	public $ID;
+	public $Icon;
+	public $HelpText;
+	public $Label;
+	public $State;
+	public $Name;
+	public $Context;
+	public $Arg1;
+	public $Arg2;
+	public $Arg3;
+	public $Arg4;
+	public $ConfirmWith;
+	public $AppliesIf;
+	public $CommandSessionID;
+	public $Target;
+}

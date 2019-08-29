@@ -3,79 +3,76 @@
 Membersuite Address Object
 */
 
-class Address
-{
-  var $RecordType = 'Address';
-  var $CASSCertificationDate;
-  var $CarrierRoute;
-  var $City;
-  var $Company;
-  var $CongressionalDistrict;
-  var $Country;
-  var $County;
-  var $DeliveryPointCheckDigit;
-  var $DeliveryPointCode;
-  var $GeocodeLat;
-  var $GeocodeLong;
-  var $LastGeocodeDate;
-  var $Line1;
-  var $Line2;
-  var $PostalCode;
-  var $State;
+class Address {
+
+	public $RecordType = 'Address';
+	public $CASSCertificationDate;
+	public $CarrierRoute;
+	public $City;
+	public $Company;
+	public $CongressionalDistrict;
+	public $Country;
+	public $County;
+	public $DeliveryPointCheckDigit;
+	public $DeliveryPointCode;
+	public $GeocodeLat;
+	public $GeocodeLong;
+	public $LastGeocodeDate;
+	public $Line1;
+	public $Line2;
+	public $PostalCode;
+	public $State;
 }
 
-class EmailTemplate
-{
-      var $SenderID;
-      var $DisplayName;
-      var $SearchType;
-      var $SearchContext;
-      var $FromName;
-      var $To;
-      var $Cc;
-      var $Bcc;
-      var $Subject;
-      var $HtmlBody;
-      var $TextBody;
-      var $ReplyTo;
+class EmailTemplate {
+
+	public $SenderID;
+	public $DisplayName;
+	public $SearchType;
+	public $SearchContext;
+	public $FromName;
+	public $To;
+	public $Cc;
+	public $Bcc;
+	public $Subject;
+	public $HtmlBody;
+	public $TextBody;
+	public $ReplyTo;
 }
 
-class ClassMetadataOverride
-{
-    var $Name;
-    var $Module;
-    var $Createable;
-    var $Updateable;
-    var $Deletable;
-    var $Label;
-    var $LabelPlural;
-    var $IsAbstract;
-    var $IsSecurable;
-    var $Fields;// list of fields
-    var $ValidationRules;// list validation rules
-    var $FieldCalculationRules;// list of calculation rules
+class ClassMetadataOverride {
+
+	public $Name;
+	public $Module;
+	public $Createable;
+	public $Updateable;
+	public $Deletable;
+	public $Label;
+	public $LabelPlural;
+	public $IsAbstract;
+	public $IsSecurable;
+	public $Fields;// list of fields
+	public $ValidationRules;// list validation rules
+	public $FieldCalculationRules;// list of calculation rules
 }
 
-class ValidationRule
-{
-    var $Name;
-    var $Expression;
-    var $ErrorMessage;
-    var $IsActive;
+class ValidationRule {
+
+	public $Name;
+	public $Expression;
+	public $ErrorMessage;
+	public $IsActive;
 }
 
-class FieldCalculationRule
-{
-    var $Name;
-    var $IsActive;
-    var $TargetField;
-    var $EvaluationOrder;
-    var $Expression;
-    var $Criteria;
-    var $SkipIfTargetFieldIsSet;
-    var $RunOnNewRecordsOnly;
-    var $Notes;
-    
-}
+class FieldCalculationRule {
 
-?>
+	public $Name;
+	public $IsActive;
+	public $TargetField;
+	public $EvaluationOrder;
+	public $Expression;
+	public $Criteria;
+	public $SkipIfTargetFieldIsSet;
+	public $RunOnNewRecordsOnly;
+	public $Notes;
+}

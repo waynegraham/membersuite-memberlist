@@ -6,13 +6,14 @@
  */
 class MembersuiteMemberlist_AdminTest extends WP_UnitTestCase
 {
+
     /**
      * Set up the test harness
      */
     public function setUp()
     {
         parent::setUp();
-        $memberlist = new MembersuiteMemberlist();
+        $memberlist           = new MembersuiteMemberlist();
         $this->class_instance = new MembersuiteMemberlist_Admin('', '');
     }
 

@@ -1,5 +1,5 @@
 <?php
-class MembersuiteMemberlist_Loader
-{
-    use Geocoder\Query\GeocodeQuery;
+class MembersuiteMemberlist_Loader {
+
+	use Geocoder\Query\GeocodeQuery;
 }

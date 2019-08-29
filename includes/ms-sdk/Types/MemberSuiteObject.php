@@ -2,7 +2,6 @@
 /*
  MemberSuite Object
 */
-class Membersuiteobjects
-{
+class Membersuiteobjects {
+
 }
-?>

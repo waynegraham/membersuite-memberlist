@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Provides basic viewing methods for data pulled from MemberSuite.
+ *
+ * @package MemberSuite
+ */
 class MembersuiteMemberlist
 {
     protected $loader;
@@ -9,7 +13,7 @@ class MembersuiteMemberlist
     public function __construct()
     {
         $this->plugin_name = 'membersuitememberlist';
-        $this->version = '0.1.0';
+        $this->version     = '0.1.0';
         $this->load_dependencies();
         $this->set_locale();
         $this->define_admin_hooks();
