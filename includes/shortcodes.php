@@ -56,8 +56,8 @@ function membersuite_map( $atts ) {
 
 	$query   = $wpdb->prepare( "SELECT name, latitude, longitude FROM `{$wpdb->prefix}membersuite-memberlist` WHERE membership_type LIKE '%s' ORDER BY name", "%{$a['membership_type']}%" );
 	$members = $wpdb->get_results( $query, ARRAY_A );
-	$output  = "<style>#membersuite-membermap{ height: {$a['height']};}</style>";
-	$output .= '<div id="membersuite-membermap"></div>';
+	$output  = "<style>#{$a['id']}{ width: {$a['width']}; height: {$a['height']};}</style>";
+	$output .= "<div id=\"{$a['id']}\"></div>";
 
 	$output .= '<script>';
 	$output .= "
@@ -77,7 +77,7 @@ function membersuite_map( $atts ) {
       emerald  = L.tileLayer(mbUrl, {id: 'mapbox.emerald', attribution: mbAttr}),
       pencil  = L.tileLayer(mbUrl, {id: 'mapbox.pencil', attribution: mbAttr});
 
-        var membershipMap = L.map('membersuite-membermap',{
+        var membershipMap = L.map('{$a['id']}',{
           center: [38.89511, -77.03637],
           zoom: 13,
           layers: [grayscale, members]
